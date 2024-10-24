@@ -1,0 +1,13 @@
+# Constants
+NUM_PIXELS_PER_STRIP = 100
+NUM_STRIPS = 4
+TOTAL_PIXELS = NUM_PIXELS_PER_STRIP * NUM_STRIPS
+WS2811_PIN = 21
+DEFAULT_RGB = (255, 0, 0)
+
+# Wi-Fi settings
+WIFI_SSID = 'RGB4k++'
+WIFI_PASSWORD = 'rgb4krgb'
+
+# Web server settings
+SERVER_PORT = 80

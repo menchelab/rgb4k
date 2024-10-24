@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RGB Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        h1 { text-align: center; }
+        .slider-container { margin-bottom: 20px; }
+        input[type="range"] { width: 100%; }
+        #color-preview { 
+            width: 100%; 
+            height: 50px; 
+            margin-top: 20px; 
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to RGB-4K++</h1>
+    <form id="rgb-form">
+        <div class="slider-container">
+            R: <input type="range" name="r" min="0" max="255" value="255">
+            <span id="r-value">255</span>
+        </div>
+        <div class="slider-container">
+            G: <input type="range" name="g" min="0" max="255" value="0">
+            <span id="g-value">0</span>
+        </div>
+        <div class="slider-container">
+            B: <input type="range" name="b" min="0" max="255" value="0">
+            <span id="b-value">0</span>
+        </div>
+    </form>
+    <div id="color-preview"></div>
+
+    <script>
+    function updateColorPreview() {
+        var r = document.getElementsByName('r')[0].value;
+        var g = document.getElementsByName('g')[0].value;
+        var b = document.getElementsByName('b')[0].value;
+        
+        document.getElementById('r-value').textContent = r;
+        document.getElementById('g-value').textContent = g;
+        document.getElementById('b-value').textContent = b;
+        
+        document.getElementById('color-preview').style.backgroundColor = `rgb(${r},${g},${b})`;
+    }
+
+    function sendColorUpdate() {
+        var r = document.getElementsByName('r')[0].value;
+        var g = document.getElementsByName('g')[0].value;
+        var b = document.getElementsByName('b')[0].value;
+        
+        fetch(`/?r=${r}&g=${g}&b=${b}`)
+            .then(response => console.log('Color updated'))
+            .catch(error => console.error('Error:', error));
+    }
+
+    document.querySelectorAll('input[type="range"]').forEach(slider => {
+        slider.addEventListener('input', updateColorPreview);
+        slider.addEventListener('change', sendColorUpdate);
+    });
+
+    // Initial color preview
+    updateColorPreview();
+    </script>
+</body>
+</html>
