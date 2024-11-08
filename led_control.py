@@ -3,6 +3,7 @@ import tinypico as TinyPICO
 import neopixel
 from micropython_dotstar import DotStar
 import time
+from config import NUM_PIXELS_PER_STRIP, NUM_STRIPS
 
 class LEDController:
     def __init__(self, ws2811_pin, total_pixels, default_rgb):
@@ -34,9 +35,11 @@ class LEDController:
 
     def update_led_strip(self, args):
         num_pixels_per_strip, num_strips = args
-        time.sleep_ms(10)
 
+        print("update strip ", self.rgb_values)
         for j in range(num_strips):
+            time.sleep_ms(10)
+            print("update strip ", j)
             base_index = j * num_pixels_per_strip 
             for i in range(num_pixels_per_strip):
                 pixel_index = base_index + (i if j % 2 == 0 else (num_pixels_per_strip - 1 - i))
@@ -47,6 +50,25 @@ class LEDController:
                     self.ws2811_strip[mirrored_index] = (0, 0, 0)
 
         self.ws2811_strip.write()
+
+    def moving_rainbow(self, shift_amount):
+        print('moving rainbow')
+        for j in range(NUM_STRIPS):
+            base_index = j * NUM_PIXELS_PER_STRIP
+            for i in range(NUM_PIXELS_PER_STRIP):
+                pixel_index = base_index + (i if j % 2 == 0 else (NUM_PIXELS_PER_STRIP - 1 - i))
+                hue = (i + shift_amount) % 256
+                rgb = self.hue_to_rgb(hue)
+                if 0 <= pixel_index < len(self.ws2811_strip):
+                    self.ws2811_strip[pixel_index] = rgb
+        self.ws2811_strip.write()
+
+    def hue_to_rgb(self, hue):
+        # place for improvements here
+        return (hue, 255 - hue, (hue // 2) % 256)
+
+
+
 
 
 

@@ -4,15 +4,57 @@
     <title>RGB Control</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-        h1 { text-align: center; }
-        .slider-container { margin-bottom: 20px; }
-        input[type="range"] { width: 100%; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(270deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+            background-size: 1400% 1400%;
+            animation: rainbow 10s ease infinite;
+        }
+        h1 { 
+            text-align: center; 
+            color: white;
+            text-shadow: 2px 2px 4px #000000;
+        }
+        .slider-container { 
+            margin-bottom: 20px; 
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.5); /* Made semi-transparent */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        input[type="range"] { 
+            width: 100%; 
+        }
         #color-preview { 
             width: 100%; 
             height: 50px; 
             margin-top: 20px; 
             border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        @keyframes rainbow {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+        .rainbow-button {
+            display: block;
+            margin: 30px auto; /* Added more distance */
+            padding: 10px 20px;
+            background-color: #ff7f50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .rainbow-button:hover {
+            background-color: #ff6347;
         }
     </style>
 </head>
@@ -32,6 +74,7 @@
             <span id="b-value">0</span>
         </div>
     </form>
+    <button class="rainbow-button"  onclick="location.href=\'/?mode=rainbow\'" >Rainbow Mode</button> <!-- Added button -->
     <div id="color-preview"></div>
 
     <script>
@@ -39,11 +82,11 @@
         var r = document.getElementsByName('r')[0].value;
         var g = document.getElementsByName('g')[0].value;
         var b = document.getElementsByName('b')[0].value;
-        
+
         document.getElementById('r-value').textContent = r;
         document.getElementById('g-value').textContent = g;
         document.getElementById('b-value').textContent = b;
-        
+
         document.getElementById('color-preview').style.backgroundColor = `rgb(${r},${g},${b})`;
     }
 
