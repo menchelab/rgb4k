@@ -1,4 +1,3 @@
-# main.py -- put your code here!
 
 import micropython
 from config import *
@@ -26,7 +25,7 @@ def main():
 
 # using threads fucks everything up because stuff is not written properly threadsafe
 # so we ditch the followiing dns server w/ catch all, also handle http handling & led controller
-# not as cool async as we wanted. big F.
+# not as cool async as we wanted. F.
 
 """
   if MicroDNSSrv.Create( {
