@@ -6,5 +6,3 @@
 
 # how to
 * get vscode extension Pymakr
-* do smart
-* profit
