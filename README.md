@@ -6,7 +6,3 @@
 
 # how to
 * get vscode extension Pymakr
-<<<<<<< HEAD
-
-=======
->>>>>>> b45fe70391f33e15b3357a81cc84b33958ace52c
