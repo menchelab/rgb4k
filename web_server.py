@@ -33,7 +33,7 @@ def handle_client(cl, rgb_callback, rainbow_callback):
             print('RGB values out of range or invalid')
     elif 'GET /?mode=rainbow' in request_str:
         print('fucking rainbowmode activsatedtrdtrsr1111111"!!!')
-        rainbow_callback(5)
+        rainbow_callback('rainbow')
 
     cl.send('HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n')
     cl.send(get_html())

@@ -14,6 +14,8 @@ class LEDController:
         TinyPICO.set_dotstar_power(True)
         self.dotstar[0] = (0, 255, 0, 0.5)
 
+        self.mode = 'rainbow'
+
         # Setup LED strip
         print('setup striup')
         self.ws2811_pin = Pin(ws2811_pin, Pin.OUT)
@@ -23,9 +25,14 @@ class LEDController:
 
     def set_rgb(self, rgb):
         print('set rgb')
+        self.mode = 'rgb'
         self.rgb_values = rgb
         self.dotstar[0] = (rgb[0], rgb[1], rgb[2], 0.5)
         print('RGB vals set:', rgb)
+
+    def set_mode(self, new_mode):
+        print('set ', mode)
+        self.mode = new_mode
 
     def initialize_led_strip(self):
         print('init strip')
@@ -35,33 +42,34 @@ class LEDController:
 
     def update_led_strip(self, args):
         num_pixels_per_strip, num_strips = args
+        shift_amount = 5
 
-        print("update strip ", self.rgb_values)
-        for j in range(num_strips):
-            time.sleep_ms(10)
-            print("update strip ", j)
-            base_index = j * num_pixels_per_strip 
-            for i in range(num_pixels_per_strip):
-                pixel_index = base_index + (i if j % 2 == 0 else (num_pixels_per_strip - 1 - i))
-                if 0 <= pixel_index < len(self.ws2811_strip):
-                    self.ws2811_strip[pixel_index] = self.rgb_values
-                mirrored_index = -1 - pixel_index + (j * 2)
-                if 0 <= mirrored_index < len(self.ws2811_strip):
-                    self.ws2811_strip[mirrored_index] = (0, 0, 0)
+        if self.mode == 'rgb':
+            for j in range(num_strips):
+                time.sleep_ms(10)
+                base_index = j * num_pixels_per_strip 
+                for i in range(num_pixels_per_strip):
+                    pixel_index = base_index + (i if j % 2 == 0 else (num_pixels_per_strip - 1 - i))
+                    if 0 <= pixel_index < len(self.ws2811_strip):
+                        self.ws2811_strip[pixel_index] = self.rgb_values
+                    mirrored_index = -1 - pixel_index + (j * 2)
+                    if 0 <= mirrored_index < len(self.ws2811_strip):
+                        self.ws2811_strip[mirrored_index] = (0, 0, 0)
+
+        elif self.mode == 'rainbow':
+            for j in range(NUM_STRIPS):
+                base_index = j * NUM_PIXELS_PER_STRIP
+                for i in range(NUM_PIXELS_PER_STRIP):
+                    pixel_index = base_index + (i if j % 2 == 0 else (NUM_PIXELS_PER_STRIP - 1 - i))
+                    hue = (i + shift_amount) % 256
+                    rgb = self.hue_to_rgb(hue)
+                    if 0 <= pixel_index < len(self.ws2811_strip):
+                        self.ws2811_strip[pixel_index] = rgb
+                    self.dotstar[0] = (rgb[0], rgb[1], rgb[2])
+
 
         self.ws2811_strip.write()
 
-    def moving_rainbow(self, shift_amount):
-        print('moving rainbow')
-        for j in range(NUM_STRIPS):
-            base_index = j * NUM_PIXELS_PER_STRIP
-            for i in range(NUM_PIXELS_PER_STRIP):
-                pixel_index = base_index + (i if j % 2 == 0 else (NUM_PIXELS_PER_STRIP - 1 - i))
-                hue = (i + shift_amount) % 256
-                rgb = self.hue_to_rgb(hue)
-                if 0 <= pixel_index < len(self.ws2811_strip):
-                    self.ws2811_strip[pixel_index] = rgb
-        self.ws2811_strip.write()
 
     def hue_to_rgb(self, hue):
         # place for improvements here

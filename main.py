@@ -15,13 +15,13 @@ def main():
     ap = setup_ap(WIFI_SSID, WIFI_PASSWORD)
 
     print('start webserver')
-    sock = serve_rgb_webpage(SERVER_PORT, led_controller.set_rgb, led_controller.moving_rainbow)
+    sock = serve_rgb_webpage(SERVER_PORT, led_controller.set_rgb, led_controller.set_mode)
 
     while True:
-        print(".")
+#        print(".")
         led_controller.update_led_strip((NUM_PIXELS_PER_STRIP, NUM_STRIPS))
 
-        handle_web(sock, led_controller.set_rgb, led_controller.moving_rainbow)
+        handle_web(sock, led_controller.set_rgb, led_controller.set_mode)
 
 # using threads fucks everything up because stuff is not written properly threadsafe
 # so we ditch the followiing dns server w/ catch all, also handle http handling & led controller
